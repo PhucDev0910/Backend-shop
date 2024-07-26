@@ -1,8 +1,8 @@
 const User = require("../models/UserModel");
-const bcrypt = require("bcrypt");
-const {compare} = require("bcrypt");
+const bcrypt = require("bcryptjs");
+//const {compare} = require("bcryptjs");
 const {genneralAccessToken, genneralRefreshToken} = require("./JwtService");
-const {promise, reject} = require("bcrypt/promises");
+//const {promise, reject} = require("bcrypt/promises");
 
 //sign-up
 const createUser = (newUser) => {
