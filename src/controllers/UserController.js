@@ -57,8 +57,9 @@ const loginUser = async (req, res) => {
       sameSite: "strict",
       path: '/',
     });
-    return res.status(200).json(...newRespone, refresh_token);
+    return res.status(200).json(newRespone);
   } catch (e) {
+    console.log(e);
     return res.status(404).json({
       message: e,
     });
@@ -138,8 +139,8 @@ const getDetailsUser = async (req, res) => {
 //refreshToken
 const refreshToken = async (req, res) => {
   try {
-    let token = req.headers.token.split(' ')[1]
-    // const token = req.cookies.refresh_token;
+    //let token = req.headers.token.split(' ')[1]
+    const token = req.cookies.refresh_token;
     //console.log('req.cookies.refreshToken', req.cookies.refreshToken)
     if (!token) {
       return res.status(200).json({
