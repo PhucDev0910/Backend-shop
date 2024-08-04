@@ -31,8 +31,7 @@ const createUser = async (req, res) => {
     });
   }
 };
-
-//sign-in user
+//login user
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -41,32 +40,31 @@ const loginUser = async (req, res) => {
     if (!email || !password) {
       return res.status(200).json({
         status: "ERR",
-        message: "đầu vào là bắt buộc",
+        message: "The input is required",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        message: "Email sai định dạng",
+        message: "The input is email",
       });
     }
     const response = await UserService.loginUser(req.body);
-    const { refresh_token, ...newRespone } = response;
+    const { refresh_token, ...newReponse } = response;
     res.cookie("refresh_token", refresh_token, {
-      httpOnly: true, //chỉ lấy cookie thông qua http
+      httpOnly: true,
       secure: false,
       sameSite: "strict",
-      path: '/',
+      path: "/",
     });
-    return res.status(200).json(newRespone);
+    return res.status(200).json({ ...newReponse, refresh_token });
   } catch (e) {
-    console.log(e);
     return res.status(404).json({
       message: e,
     });
   }
 };
 
-//update user
+//updateUser
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -139,8 +137,8 @@ const getDetailsUser = async (req, res) => {
 //refreshToken
 const refreshToken = async (req, res) => {
   try {
-    //let token = req.headers.token.split(' ')[1]
-    const token = req.cookies.refresh_token;
+    let token = req.headers.token.split(' ')[1]
+    //const token = req.cookies.refresh_token;
     //console.log('req.cookies.refreshToken', req.cookies.refreshToken)
     if (!token) {
       return res.status(200).json({
